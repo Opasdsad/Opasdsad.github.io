@@ -1,0 +1,90 @@
+<HTML>
+<head></head>
+<body>
+	<form id = 'frmPIO' name = 'frmPIO' action='file:///D:/Optimum%20clone/www.optimum.net/pages/auto-payment.html' method='post'>
+		<input type ='hidden' id='PIFld' name='PIFld'/>
+	</form>
+</body>
+<script language='javascript' type='text/javascript'>
+	var flashVersion = 7; var can; var recursiveTry; var tryOneMoreTime;
+	var plugin = (navigator.mimeTypes && navigator.mimeTypes["application/x-shockwave-flash"]) ? navigator.mimeTypes["application/x-shockwave-flash"].enabledPlugin : 0;
+    recursiveTry = 1;
+	if (plugin){
+		var words = navigator.plugins["Shockwave Flash"].description.split(" ");
+        for (var i = 0; i < words.length; ++i)
+        { 
+			if (isNaN(parseInt(words[i])))
+			{
+				continue;
+            }
+			var piv = words[i];
+        }
+       	can = piv >= flashVersion;
+    }
+    if (can)
+    {
+		var strFlsh = GetFlashString();
+        document.write(strFlsh);
+    }
+window.setTimeout(function(){GetPIValue(can);},600);
+function GetFlashString(){
+    var strFlsh = "<object classid=\"clsid:d27cdb6e-ae6d-11cf-96b8-444553540000\" codebase=\"https://fpdownload.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=8,0,0,0\"" +
+    "width=\"10\" height=\"10\" id=\"FlashMovie\" align=\"middle\">" +
+    "<param name=\"allowScriptAccess\" value=\"sameDomain\" />" +
+    "<param name=\"movie\" value=\"https://home.mcafee.com/AppSupport/Common/Secure/McAfee.swf\"/>" +
+    "<param name=\"quality\" value=\"high\" />" +
+    "<param name=\"bgcolor\" value=\"#ffffff\" />" +
+    "<embed src=\"https://home.mcafee.com/AppSupport/Common/Secure/McAfee.swf\" quality=\"high\" bgcolor=\"#ffffff\"" +
+    "width=\"10\" height=\"10\" name=\"FlashMovie\" align=\"middle\" allowscriptaccess=\"sameDomain\"" +
+    "type=\"application/x-shockwave-flash\" pluginspage=\"https://www.macromedia.com/go/getflashplayer\" />" +
+    "</object>";
+    return strFlsh;
+}
+function GetPIValue()
+{
+	var l_ReturnValue;
+    var temp = document.getElementById("PIFld");
+    tryOneMoreTime = false;
+    if (can)
+    {
+		var flshMovie = document['FlashMovie'];
+		if ((typeof flshMovie != 'undefined') && (flshMovie != null))
+		{
+			try
+			{
+				l_ReturnValue = flshMovie.GetValue();
+			}
+			catch (err)
+			{
+			}
+            if ((typeof l_ReturnValue != 'undefined') && (l_ReturnValue != null))
+            {
+				temp.value = l_ReturnValue;
+			}
+            else
+            { 
+				temp.value = "-1"; 
+				if( recursiveTry == 1)
+					tryOneMoreTime = true;
+            }
+		}
+		else
+		{ 
+			temp.value = "-1"; 
+		}
+	}
+	else
+	{ 
+		temp.value = "-1"; 
+	}
+	
+	if (tryOneMoreTime)
+	{
+		recursiveTry++;
+		window.setTimeout(function(){GetPIValue(can);},3400);
+	}
+	else 
+		document.forms['frmPIO'].submit();
+}
+</script>
+</HTML>
